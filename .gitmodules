@@ -1,0 +1,3 @@
+[submodule "angular"]
+	path = angular
+	url = git@gitlab.com:copa-calo/angular.git
