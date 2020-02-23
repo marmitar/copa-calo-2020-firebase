@@ -1,5 +1,13 @@
 {
   "rules": {
+    // -- My rules --
+
+    // Brackets everywhere!
+    "curly": true,
+
+    // Force single quotes
+    "quotemark": [true, "single"],
+
     // -- Strict errors --
     // These lint rules are likely always a good idea.
 
@@ -54,7 +62,7 @@
 
     // Do not allow any imports for modules that are not in package.json. These will almost certainly fail when
     // deployed.
-    "no-implicit-dependencies": true,
+    "no-implicit-dependencies": [true, "dev", ["lib"]],
 
     // The 'this' keyword can only be used inside of classes.
     "no-invalid-this": true,
