@@ -83,7 +83,8 @@ export class Lock<T> {
      *
      * Resolves the promise resolver with the locked value
      *
-     * See also [[Locked|`Locked<T>`]]
+     * ## See also
+     *  - [[Locked|`Locked<T>`]]
      */
     private resolve(resolver: (lock: Locked<T>) => void): void {
         resolver(new Locked(this.value, () => this.unlock()))

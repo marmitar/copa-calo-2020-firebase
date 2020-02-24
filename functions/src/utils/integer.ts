@@ -43,7 +43,7 @@ export function isNat(text: string): boolean {
  * Numbers are just passed along when a valid integer for
  * {@linkcode https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger | Number.isInteger}.
  *
- * See also:
+ * ## See also:
  *  - [[isInt|`isInt`]]
  *  - {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt#Description | `parseInt` problems}
  *

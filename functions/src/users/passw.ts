@@ -23,7 +23,7 @@ interface Words {
     /**
      * Positional access
      *
-     * Should be string for integer in [0, length)
+     * Should be `string` for integer in `[0, length)`
      */
     readonly [field: number]: string | undefined
 }
@@ -38,7 +38,7 @@ namespace Words {
     type Document = DocumentSnapshot<DocumentData>
 
     /**
-     * Helper class for accessing firestore batabase
+     * Helper class for accessing firestore database
      *
      * @category Words
      */
@@ -158,7 +158,7 @@ const forms: ((s: string) => string)[] = [capitalize, s => s.toLowerCase(), s =>
  * They are also connected with a chosen separator between
  * `['-', '_', '.', ',', '*', '@']`
  *
- * @param amount Amount of words to use, defaults to 3
+ * @param amount Amount of words to use
  */
 export async function generatePassword(amount = 3): Promise<string> {
     const promises = <const> [choose(seps), choose(forms), Words.load()]
