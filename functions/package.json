@@ -2,7 +2,7 @@
     "name": "functions",
     "scripts": {
         "repl": "node -r module-alias/register -r lib/index --experimental-repl-await",
-        "lint": "npx tslint --project tsconfig.json",
+        "lint": "npx eslint --ext .ts src",
         "docs": "npx typedoc",
         "serve-docs": "npm run docs && http-server docs",
         "build": "npm run clean && npm run lint && npx tsc",
@@ -11,25 +11,30 @@
         "start": "npm run shell",
         "deploy": "firebase deploy --only functions",
         "logs": "firebase functions:log",
-        "clean": "rm -rf *.log lib doc",
-        "nuke": "npm run clean && rm -rf node_modules"
+        "clean": "rm -rf *.log lib",
+        "nuke": "npm run clean && rm -rf docs node_modules"
     },
     "engines": {
         "node": "10"
     },
     "main": "lib/index.js",
     "dependencies": {
+        "@google-cloud/firestore": "^3.5.1",
         "firebase-admin": "^8.9.2",
         "firebase-functions": "^3.3.0",
         "module-alias": "^2.2.2"
     },
     "devDependencies": {
-        "@google-cloud/firestore": "^3.5.1",
         "@types/node": "^13.7.4",
+        "@typescript-eslint/eslint-plugin": "^2.21.0",
+        "@typescript-eslint/parser": "^2.21.0",
+        "eslint": "^6.8.0",
+        "eslint-plugin-import": "^2.20.1",
         "firebase-functions-test": "^0.1.6",
-        "tslint": "^5.12.0",
+        "import": "0.0.6",
         "typedoc": "^0.16.10",
-        "typescript": "^3.8.2"
+        "typescript": "^3.8.2",
+        "typescript-eslint": "0.0.1-alpha.0"
     },
     "_moduleAliases": {
         "lib": "lib"
