@@ -3,6 +3,7 @@
     "scripts": {
         "lint": "npx tslint --project tsconfig.json",
         "docs": "npx typedoc",
+        "serve-docs": "npm run docs && http-server docs",
         "build": "npm run lint && npx tsc",
         "serve": "firebase serve --only functions",
         "shell": "firebase functions:shell",

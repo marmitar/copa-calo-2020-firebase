@@ -8,6 +8,9 @@
     // Force single quotes
     "quotemark": [true, "single"],
 
+    // No semicolons, please.
+    "semicolon": [true, "never"],
+
     // -- Strict errors --
     // These lint rules are likely always a good idea.
 
