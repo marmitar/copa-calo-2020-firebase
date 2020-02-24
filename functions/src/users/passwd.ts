@@ -7,7 +7,7 @@
 import { DocumentSnapshot, DocumentData } from '@google-cloud/firestore'
 import * as admin from 'firebase-admin'
 
-import { isNat } from 'lib/utils/integer'
+import { isNat, parseIntStrict } from 'lib/utils/integer'
 import { unique, randRange, choose } from 'lib/utils/random'
 
 /**
@@ -53,7 +53,7 @@ namespace Words {
         }
 
         /** @ignore Asserts a valid position */
-        private validPosition(pos: number | string, prop: 'length' | 'position'): void {
+        private validPosition(pos: number, prop: 'length' | 'position'): void {
             // 'length' should be positive integer
             // 'position' also accepts zero
             if (! isNat(`${pos}`) || prop === 'length' && `${pos}` === '0') {
@@ -82,7 +82,7 @@ namespace Words {
         }
 
         /** Recover word at given position */
-        get(position: number | string): string | undefined {
+        get(position: number): string | undefined {
             this.validPosition(position, 'position')
             return this.doc.get(`${position}`)
         }
@@ -113,7 +113,13 @@ namespace Words {
                 } else if (property === 'data') {
                     return target.data()
                 } else {
-                    return target.get(property)
+                    const pos = parseIntStrict(property)
+                    if (pos === undefined || !isNat(`${pos}`)) {
+                        return undefined
+
+                    } else {
+                        return target.get(pos)
+                    }
                 }
             }
         })

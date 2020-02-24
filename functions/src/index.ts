@@ -8,7 +8,7 @@ import 'module-alias/register'
 
 import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
-import { generatePassword } from 'lib/users/passw'
+import { generatePassword } from 'lib/users/passwd'
 
 // Firebase SDK initialization
 admin.initializeApp({
