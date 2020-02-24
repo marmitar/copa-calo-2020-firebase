@@ -15,7 +15,9 @@
         "strictNullChecks": true,
         "removeComments": true,
         "resolveJsonModule": true,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "noEmitOnError": true,
+        "incremental": true
     },
     "compileOnSave": true,
     "include": [

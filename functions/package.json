@@ -1,22 +1,25 @@
 {
     "name": "functions",
     "scripts": {
+        "repl": "node -r module-alias/register -r lib/index --experimental-repl-await",
         "lint": "npx tslint --project tsconfig.json",
         "docs": "npx typedoc",
         "serve-docs": "npm run docs && http-server docs",
-        "build": "npm run lint && npx tsc",
+        "build": "npm run clean && npm run lint && npx tsc",
         "serve": "firebase serve --only functions",
         "shell": "firebase functions:shell",
         "start": "npm run shell",
         "deploy": "firebase deploy --only functions",
-        "logs": "firebase functions:log"
+        "logs": "firebase functions:log",
+        "clean": "rm -rf *.log lib doc",
+        "nuke": "npm run clean && rm -rf node_modules"
     },
     "engines": {
         "node": "10"
     },
     "main": "lib/index.js",
     "dependencies": {
-        "firebase-admin": "^8.6.0",
+        "firebase-admin": "^8.9.2",
         "firebase-functions": "^3.3.0",
         "module-alias": "^2.2.2"
     },
@@ -26,7 +29,7 @@
         "firebase-functions-test": "^0.1.6",
         "tslint": "^5.12.0",
         "typedoc": "^0.16.10",
-        "typescript": "^3.2.2"
+        "typescript": "^3.8.2"
     },
     "_moduleAliases": {
         "lib": "lib"

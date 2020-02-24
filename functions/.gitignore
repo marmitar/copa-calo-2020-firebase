@@ -1,6 +1,7 @@
 ## Compiled JavaScript files
 **/*.js
 **/*.js.map
+lib/
 ## Compiled documentation
 docs/
 
