@@ -39,6 +39,9 @@ rules:
         - never
     '@typescript-eslint/triple-slash-reference': error
     '@typescript-eslint/unified-signatures': warn
+    '@typescript-eslint/explicit-function-return-type':
+        - error
+        - { allowExpressions: true }
     no-param-reassign: error
     comma-dangle: warn
     constructor-super: error
