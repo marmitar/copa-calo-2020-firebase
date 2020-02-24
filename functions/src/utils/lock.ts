@@ -49,17 +49,14 @@
  */
 export class Lock<T> {
     /** Current lock state */
-    private locked: boolean
+    private locked = false
     /** Queue waiting for lock */
-    private waiting: (() => void)[]
+    private waiting: (() => void)[] = []
 
     /**
      * @param value  The value protected by this lock
      */
-    constructor(private value: T) {
-        this.locked = false
-        this.waiting = []
-    }
+    constructor(private value: T) { }
 
     /**
      * Asynchronously wait for a lock and resolves
