@@ -79,7 +79,8 @@ export class Lock<T> {
         }
     }
 
-    /**
+    /** @ignore
+     *
      * Resolves the promise resolver with the locked value
      *
      * See also [[Locked|`Locked<T>`]]
