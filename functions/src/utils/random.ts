@@ -16,7 +16,7 @@ const bytes = promisify(randomBytes)
 /** @ignore Length of random bytes */
 const LEN = 6
 /** @ignore One more than maximum value represented with [[LEN]] bytes */
-const MAX = 1 << (4 * LEN)
+const MAX = 2 ** (8 * LEN)
 
 /**
  * Asynchronously generates a random number in
