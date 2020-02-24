@@ -21,6 +21,8 @@ const MAX = 1 << (4 * LEN)
 /**
  * Asynchronously generates a random number in
  * the open range [0.0, 1.0)
+ *
+ * @category Random
  */
 export async function random(): Promise<number> {
     const b = await bytes(LEN)
@@ -33,22 +35,27 @@ export async function random(): Promise<number> {
  * from `min` up to, but not including, `max`
  *
  * `min` is assumed `0`, if not provided
+ *
+ * @category Random
  */
 // tslint:disable-next-line:unified-signatures
 export async function randRange(max: number): Promise<number>
 // tslint:disable-next-line:unified-signatures
 export async function randRange(min: number, max: number): Promise<number>
 export async function randRange(min: number, max?: number): Promise<number> {
+    // TODO: test this
     const [start, diff] = (max === undefined)? [0, min] : [min, max]
 
     const value = await random()
-    return Math.floor(value * diff + start)
+    return Math.floor(start + value * diff)
 }
 
 /**
  * Randomly selects a value from an array
  *
  * @param values Non-empty array
+ *
+ * @category Random
  */
 export async function choose<T>(values: T[]): Promise<T> {
     const i = await randRange(values.length)
@@ -65,6 +72,8 @@ export async function choose<T>(values: T[]): Promise<T> {
  *
  *  type B = Result<number> // number
  * ```
+ *
+ * @category Types
  */
 type Result<P> = P extends Promise<infer R>? R : P
 /**
@@ -86,11 +95,15 @@ type Result<P> = P extends Promise<infer R>? R : P
  *
  *  type B = SyncReturn<typeof g> // number
  * ```
+ *
+ * @category Types
  */
 type SyncReturn<F extends (...args: any[]) => any> = Result<ReturnType<F>>
 
 /**
  * Garantees that consecutive calls to the new function are unique
+ *
+ * ## Caution
  *
  * Should be used with care as it may run indefinetely if the original
  * function cannot generate different values for every call
@@ -109,21 +122,23 @@ type SyncReturn<F extends (...args: any[]) => any> = Result<ReturnType<F>>
  * ```
  */
 export function unique<Args extends any[], F extends (...args: Args) => any>(func: F, ...args: Args): () => Promise<SyncReturn<F>> {
+    // values already produced
     const values = new Lock(new Set())
 
     async function wrapped(): Promise<SyncReturn<F>> {
+        // loop until it generates a different value
         while (true) {
             const value = await func(...args)
-
             const lock = await values.lock()
-            if (lock.value.has(value)) {
-                lock.unlock()
-                continue
-            }
 
-            lock.value.add(value)
+            // only return with a different value
+            if (! lock.value.has(value)) {
+                lock.value.add(value)
+                lock.unlock()
+                return value
+            }
+            // otherwise, keeps running
             lock.unlock()
-            return value
         }
     }
     return wrapped
