@@ -120,7 +120,7 @@ class Locked<T> {
     private inner: {
         unlocked: true
     } | {
-        unlocked: false,
+        unlocked: false
         value: T
     }
 

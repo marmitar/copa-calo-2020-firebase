@@ -38,9 +38,9 @@ export async function random(): Promise<number> {
  *
  * @category Random
  */
-// tslint:disable-next-line:unified-signatures
+// signatures are better documented like this
 export async function randRange(max: number): Promise<number>
-// tslint:disable-next-line:unified-signatures
+// eslint-disable-next-line @typescript-eslint/unified-signatures
 export async function randRange(min: number, max: number): Promise<number>
 export async function randRange(min: number, max?: number): Promise<number> {
     // TODO: test this

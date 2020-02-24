@@ -3,7 +3,7 @@
  *
  * @packageDocumentation
  */
-// tslint:disable-next-line:no-import-side-effect
+// eslint-disable-next-line import/no-unassigned-import
 import 'module-alias/register'
 
 import * as admin from 'firebase-admin'
