@@ -140,7 +140,7 @@ class Locked<T> {
      */
     get value(): T {
         if (this.inner.unlocked) {
-            throw new Error('Lock alread unlocked, no value present')
+            throw new Error('Lock already unlocked, no value present')
         }
         return this.inner.value
     }
