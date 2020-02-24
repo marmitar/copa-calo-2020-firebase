@@ -1,8 +1,27 @@
-import * as functions from 'firebase-functions';
+/**
+ * # Firebase functions
+ *
+ * @packageDocumentation
+ */
+// tslint:disable-next-line:no-import-side-effect
+import 'module-alias/register'
 
-// Start writing Firebase Functions
-// https://firebase.google.com/docs/functions/typescript
+import * as admin from 'firebase-admin'
+import * as functions from 'firebase-functions'
+import { generatePassword } from 'lib/users/passw'
 
-export const helloWorld = functions.https.onRequest((request, response) => {
- response.send("Hello from Firebase!");
+// Firebase SDK initialization
+admin.initializeApp({
+    credential: admin.credential.applicationDefault(),
+    databaseURL: 'https://copa-calo-devel.firebaseio.com'
+})
+
+
+/**
+ * Generate random password with [[generatePassword|`generatePassword()`]]
+ *
+ * FIXME: not an open function, do not deploy this
+ */
+export const generate = functions.https.onRequest(async (_, response) => {
+    response.send(await generatePassword())
 })
