@@ -23,8 +23,6 @@
     ],
     "typedocOptions": {
         "out": "docs",
-        "excludePrivate": true,
-        "excludeNotExported": true,
         "theme": "minimal"
     }
 }

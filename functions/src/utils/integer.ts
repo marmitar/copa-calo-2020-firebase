@@ -1,8 +1,9 @@
 /**
- * Utilities functions related to integers
+ * # Utilities functions related to integers
  *
  * @packageDocumentation
  */
+
 
 /** Regex for a string representing an integer */
 const integerRegex = /^-?\d+$/
@@ -13,7 +14,7 @@ const naturalRegex = /^([1-9]\d*|0)$/
  * Validates if a string is a valid integer representation
  * in base 10
  *
- * @category Integer Validation StringValidation
+ * @category String Validation
  */
 export function isInt(text: string): boolean {
     return integerRegex.test(text)
@@ -25,7 +26,7 @@ export function isInt(text: string): boolean {
  *
  * Natural numbers as positive integers, but also zero (`0`)
  *
- * @category Integer Validation StringValidation Natural
+ * @category String Validation
  */
 export function isNat(text: string): boolean {
     return naturalRegex.test(text)
@@ -48,7 +49,7 @@ export function isNat(text: string): boolean {
  *
  * @returns     The parsed number if successful or undefined otherwise
  *
- * @category Integer Validation StringValidation Parsing IntegerParsing
+ * @category Integer Parsing
  */
 export function parseIntStrict(num: string | number): number | undefined {
     if (typeof num === 'string' && integerRegex.test(num)) {
