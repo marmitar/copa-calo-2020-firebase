@@ -5,7 +5,7 @@
         "lint": "npx eslint --ext .ts src",
         "docs": "npx typedoc",
         "serve-docs": "npm run docs && http-server docs",
-        "build": "npm run clean && npm run lint && npx tsc",
+        "build": "npm run lint && npx tsc",
         "serve": "firebase serve --only functions",
         "shell": "firebase functions:shell",
         "start": "npm run shell",
