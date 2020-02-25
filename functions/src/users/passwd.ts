@@ -166,7 +166,7 @@ const forms: ((s: string) => string)[] = [capitalize, s => s.toLowerCase(), s =>
  *
  * @param amount Amount of words to use
  */
-export async function generatePassword(amount = 3): Promise<string> {
+async function generatePassword(amount = 3): Promise<string> {
     const promises = <const> [choose(seps), choose(forms), Words.load()]
     const [sep, form, wordList] = await Promise.all(promises)
     // unique values in [0, length)
@@ -179,3 +179,5 @@ export async function generatePassword(amount = 3): Promise<string> {
 
     return words.map(form).join(sep)
 }
+
+export = generatePassword
