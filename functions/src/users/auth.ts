@@ -6,45 +6,42 @@
 import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
 import HttpsError = functions.https.HttpsError
-
-/**
- * # User roles
- */
-export enum Role {
-    ADMIN = 'admin',
-    NONE = 'none'
-}
+import Token = admin.auth.DecodedIdToken
 
 /**
  * Roles utilities
  */
 export namespace Role {
-    /**
-     * Get user role
-     *
-     * @param uid  User id
-     */
-    export async function get(uid: string): Promise<Role> {
-        const doc = await admin.firestore()
-            .collection('users')
-            .doc(uid)
-            .get()
-
-        return doc.get('role') ?? Role.NONE
+    export async function get(token: string | Token, check?: boolean): Promise<string> {
+        if (typeof token === 'string') {
+            const user = await admin.auth().verifyIdToken(token, check)
+            return user.role
+        } else {
+            return token.role
+        }
     }
 
-    /**
-     * Test user for Roles
-     *
-     * @param uid  User id
-     * @param roles Possible roles
-     */
-    export async function assert(uid: string | undefined, ...roles: Role[]): Promise<Role> {
-        let userRole = Role.NONE
-        if (uid === undefined || !roles.includes(userRole = await get(uid))) {
-            const msg = `Usuário não tem permissão para isso. Permissão atual: ${userRole}.`
+    export async function assert(token: Token | string | undefined, ...roles: string[]): Promise<string>
+    export async function assert(token: Token | string | undefined, check: boolean, ...roles: string[]): Promise<string>
+    export async function assert(token: Token | string | undefined, check: boolean | string, ...roles: string[]): Promise<string> {
+        let doCheck = undefined
+        if (typeof check === 'boolean') {
+            doCheck = check
+        } else {
+            roles.push(check)
+        }
+
+        const userRole = token === undefined ? undefined : await get(token, doCheck)
+        if (userRole === undefined || !roles.includes(userRole)) {
+            const msg = `Usuário não tem permissão para isso. Permissão atual: ${userRole}. Token: ${token}`
             throw new HttpsError('permission-denied', msg)
         }
         return userRole
     }
+}
+
+export async function setUser(email: string, claims: Object): Promise<void> {
+    const {uid} = await admin.auth().getUserByEmail(email)
+
+    await admin.auth().setCustomUserClaims(uid, claims)
 }
