@@ -23,7 +23,7 @@ admin.initializeApp({
  * Generate random password with [[generate|`generate()`]]
  */
 export const generatePassword = functions.https.onCall(async (_, context) => {
-    await Role.assert(context.auth?.uid, Role.ADMIN)
+    await Role.assert(context.instanceIdToken || context.auth?.token, true, 'admin')
 
     const passwd = await generate()
     return passwd
