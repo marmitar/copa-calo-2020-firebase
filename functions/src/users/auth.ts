@@ -45,3 +45,28 @@ export async function setUser(email: string, claims: Object): Promise<void> {
 
     await admin.auth().setCustomUserClaims(uid, claims)
 }
+
+export async function resetPassword(email: string, password: string) {
+    const {uid} = await admin.auth().getUserByEmail(email)
+
+    return await admin.auth().updateUser(uid, { password })
+}
+
+export async function listUsers(startingWith?: string) {
+    const users: admin.auth.UserRecord[] = []
+
+    for (let page: undefined | string | null = undefined; page !== null;) {
+        type Users = admin.auth.ListUsersResult
+        const batch: Users = await admin.auth().listUsers(1000, page)
+
+        if (startingWith) {
+            const newUsers = batch.users.filter(u => u.email?.startsWith(startingWith))
+            users.push(...newUsers)
+        } else {
+            users.push(...batch.users)
+        }
+        page = batch.pageToken ?? null
+    }
+
+    return users
+}
