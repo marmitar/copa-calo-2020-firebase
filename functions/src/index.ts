@@ -8,7 +8,7 @@ import 'module-alias/register'
 
 import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
-import { Role, listUsers, setUser, resetPassword } from 'lib/users/auth'
+import { Role, listUsers, setUser } from 'lib/users/auth'
 import generate from 'lib/users/passwd'
 
 // Firebase SDK initialization
@@ -20,7 +20,7 @@ admin.initializeApp({
 
 function adminCall(...fn: Parameters<typeof functions.https.onCall>): ReturnType<typeof functions.https.onCall> {
     return functions.https.onCall(async (data, ctx) => {
-        await Role.assert(ctx.instanceIdToken || ctx.auth?.token, true, 'admin')
+        await Role.assert(ctx.auth?.token ?? ctx.instanceIdToken, true, 'admin')
 
         return fn[0](data, ctx)
     })
@@ -30,11 +30,10 @@ function adminCall(...fn: Parameters<typeof functions.https.onCall>): ReturnType
 /**
  * Generate random password with [[generate|`generate()`]]
  */
-export const generatePassword = adminCall(generate)
+export const generatePassword = adminCall(() => generate())
 
-export const listAllUsers = adminCall(async start => {
-    const users = await listUsers(start)
+export const listAllUsers = adminCall(async () => {
+    const users = await listUsers()
     return users.map(user => Object.assign(user.customClaims ?? {}, {email: user.email!}))
 })
-export const setUserRole = adminCall(data => setUser(data.email, data.claims))
-export const setUserPassword = adminCall(data => resetPassword(data.email, data.password))
+export const updateUser = adminCall(data => setUser(data.email, data.password, data.role))

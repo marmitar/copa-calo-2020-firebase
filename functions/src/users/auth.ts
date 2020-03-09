@@ -40,19 +40,36 @@ export namespace Role {
     }
 }
 
-export async function setUser(email: string, claims: Object): Promise<void> {
-    const {uid} = await admin.auth().getUserByEmail(email)
+export async function setUserPassword(email: string, password: string): Promise<string> {
+    try {
+        const {uid} = await admin.auth().getUserByEmail(email)
+        await admin.auth().updateUser(uid, { password })
+        return uid
 
-    await admin.auth().setCustomUserClaims(uid, claims)
+    } catch (err) {
+        if (err.code === 'auth/user-not-found') {
+            const {uid} = await admin.auth().createUser({email, password})
+            return uid
+        } else {
+            throw err
+        }
+    }
 }
 
-export async function resetPassword(email: string, password: string) {
-    const {uid} = await admin.auth().getUserByEmail(email)
+export async function setUser(email: string, password?: string, claims?: Object): Promise<void> {
+    let uid: string
+    if (password) {
+        uid = await setUserPassword(email, password)
+    } else {
+        uid = (await admin.auth().getUserByEmail(email)).uid
+    }
 
-    return await admin.auth().updateUser(uid, { password })
+    if (claims) {
+        await admin.auth().setCustomUserClaims(uid, claims)
+    }
 }
 
-export async function listUsers(startingWith?: string) {
+export async function listUsers(startingWith?: string): Promise<admin.auth.UserRecord[]> {
     const users: admin.auth.UserRecord[] = []
 
     for (let page: undefined | string | null = undefined; page !== null;) {
